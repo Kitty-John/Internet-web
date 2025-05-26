@@ -188,7 +188,7 @@
         position: relative;
         z-index: 10;
         display: flex;
-        justify-content: center; 
+        justify-content: center; /* changed from flex-start */
         align-items: center;
         gap: 40px;
         height: 100%;
@@ -537,6 +537,7 @@
         100% { transform: rotate(360deg); }
       }
 
+      /* Light theme styles */
       body.light-theme {
         --text-color: #555555;
         --accent-color: #8b0000;
@@ -562,6 +563,7 @@
         background: rgba(255, 255, 255, 0.8);
       }
 
+      /* Media Queries */
       @media (max-width: 768px) {
         .profiles-wrapper {
           padding: 100px 10px 70px;
@@ -672,7 +674,7 @@
     </div>
 
     <div class="content" id="content" role="main" style="display: flex;">
-      <img src="images/8530bdc8359eeb15f4e2d242f3dade07.gif" class="bg-image" id="bgImage" alt="Background animation" aria-hidden="true" loading="lazy">
+      <img src="8530bdc8359eeb15f4e2d242f3dade07.gif" class="bg-image" id="bgImage" alt="Background animation" aria-hidden="true" loading="lazy">
 
       <div class="header">
         <div class="title"> Internet’s Dark Side</div>
@@ -713,7 +715,7 @@
     </div>
   </div>
 
-  <div class="profile-container" tabindex="0" aria-label="Profile: sloan">
+  <div class="profile-container" tabindex="0" aria-label="Profile: M">
     <img src="images/mmm.png" class="profile-img" alt="Profile image of sloan" loading="lazy" onload="this.classList.remove('loading')">
     <div class="username" aria-label="Username">𝐌</div>
     <div class="handle" aria-label="Role">i.skid</div>
@@ -739,6 +741,391 @@
   </div>
 </div>
 
+<div class="chat-float">
+  <a href="#" class="chat-circle" aria-label="Go to Chat Room">
+    ➤
+    <span class="tooltip">GO TO CHAT ROOM</span>
+  </a>
+</div>
+
+<div id="chatRoom" style="display:none;">
+  <button id="goBackBtn" class="chat-circle back-arrow" aria-label="Go Back">
+    &#x27A4;
+    <span class="tooltip">GO BACK</span>
+  </button>
+
+  <h2 class="chat-title glitch">Chat Room</h2>
+
+  <div id="chatContent">
+    <div class="chat-message user">Hey! This looks awesome!</div>
+  </div>
+
+  <div id="inputArea">
+    <input type="text" id="messageInput" placeholder="Type your message..." />
+    <button id="sendBtn">Enter</button>
+  </div>
+</div>
+
+<div id="profilesWrapper">
+  <p>Profiles content here...</p>
+</div>
+
+<style>
+  /* Floating chat circle */
+  .chat-float {
+    position: fixed;
+    top: 50%;
+    right: 30px;
+    transform: translateY(-50%);
+    z-index: 999;
+  }
+  .chat-circle {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    background: #010101; /* very dark black */
+    color: #cc2222; /* subtle red */
+    text-decoration: none;
+    border-radius: 50%;
+    font-size: 24px;
+    border: 1px solid #330000;
+    box-shadow: 0 0 8px rgba(204, 34, 34, 0.3);
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+    font-family: monospace;
+    cursor: pointer;
+    overflow: visible;
+  }
+  .chat-circle:hover {
+    box-shadow: 0 0 15px rgba(204, 34, 34, 0.7);
+    transform: scale(1.05);
+    animation: glitch 1.5s infinite;
+  }
+  .tooltip {
+    position: absolute;
+    right: 100%;
+    margin-right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #cc2222;
+    font-size: 14px;
+    font-family: monospace;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    visibility: hidden;
+    transition: opacity 0.3s ease;
+    user-select: none;
+    background: none;
+    left: auto;
+  }
+  .chat-circle:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Chat room container */
+  #chatRoom {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: transparent;
+    border-radius: 12px;
+    width: 800px;
+    height: 900px;
+    padding: 20px 30px 70px 30px;
+    font-family: monospace;
+    color: #cc2222;
+    user-select: text;
+    display: flex;
+    flex-direction: column;
+    z-index: 1300;
+  }
+
+  /* Chat title with subtle glitch */
+.chat-title {
+  position: absolute;    /* position relative to parent */
+  top: -20px;             /* adjust vertical */
+  left: 270px;            /* adjust horizontal */
+  font-size: 38px;
+  color: #000;
+  filter: drop-shadow(0 0 1px #440000);
+  animation: subtleGlitch 2s infinite ease-in-out;
+  user-select: none;
+  }
+
+  @keyframes subtleGlitch {
+    0%, 100% {
+      text-shadow:
+        0 0 1px #220000;
+    }
+    25% {
+      text-shadow:
+        1px 0 2px #330000;
+    }
+    50% {
+      text-shadow:
+        -1px 0 2px #440000;
+    }
+    75% {
+      text-shadow:
+        1px 0 1.5px #550000;
+    }
+  }
+
+  /* Chat messages area */
+  #chatContent {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    font-size: 16px;
+    line-height: 1.5;
+    user-select: text;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Scrollbar styles for WebKit */
+  #chatContent::-webkit-scrollbar {
+    width: 8px;
+    background-color: #000; /* black track */
+  }
+  #chatContent::-webkit-scrollbar-thumb {
+    background-color: #550000; /* darker red thumb */
+    border-radius: 4px;
+    box-shadow: 0 0 5px #440000;
+  }
+  #chatContent::-webkit-scrollbar-thumb:hover {
+    background-color: #cc2222;
+  }
+
+  /* Scrollbar styles for Firefox */
+  #chatContent {
+    scrollbar-width: thin;
+    scrollbar-color: #550000 #000;
+  }
+
+  /* Chat message bubbles */
+  .chat-message {
+    background: #010101; /* almost black */
+    color: #cc2222;
+    border-radius: 12px;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    max-width: fit-content;
+    box-shadow: 0 0 6px #440000;
+    word-wrap: break-word;
+    align-self: flex-start; /* left align */
+  }
+
+  /* Input area */
+  #inputArea {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+  }
+  #messageInput {
+    flex: 1;
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid #330000;
+    background: #010101;
+    color: #cc2222;
+    font-family: monospace;
+    font-size: 16px;
+    box-shadow: inset 0 0 5px #440000;
+  }
+  #messageInput::placeholder {
+    color: #660000;
+  }
+  #sendBtn {
+    background: linear-gradient(45deg, #110000, #330000);
+    color: #cc2222;
+    border: 1px solid #330000;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 16px;
+    padding: 0 20px;
+    cursor: pointer;
+    box-shadow: 0 0 6px #440000;
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+  }
+  #sendBtn:hover {
+    box-shadow: 0 0 12px #cc2222;
+    transform: scale(1.05);
+    animation: glitch 1.5s infinite;
+  }
+
+  /* Go Back button on the left */
+  #goBackBtn {
+    z-index: 1000;
+    top: 350px;
+    left: -560px;
+    width: 60px;
+    height: 60px;
+    font-size: 28px;
+    border-radius: 50%;
+    background: #010101;
+    border: 1px solid #330000;
+    box-shadow: 0 0 8px rgba(204, 34, 34, 0.3);
+    cursor: pointer;
+    color: #cc2222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: monospace;
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+    overflow: visible;
+  }
+  #goBackBtn:hover {
+    box-shadow: 0 0 15px rgba(204, 34, 34, 0.7);
+    transform: scale(1.1);
+    animation: glitch 1.5s infinite;
+  }
+  #goBackBtn .tooltip {
+    left: 100%;
+    right: auto;
+    margin-left: 20px;
+    margin-right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #cc2222;
+  }
+
+  /* Glitch animation */
+  @keyframes glitch {
+    0% {
+      text-shadow: 1px 0 #cc2222, -1px 0 #550000;
+    }
+    20% {
+      text-shadow: -2px 0 #cc2222, 2px 0 #550000;
+    }
+    40% {
+      text-shadow: 2px 0 #cc2222, -2px 0 #550000;
+    }
+    60% {
+      text-shadow: -1px 0 #cc2222, 1px 0 #550000;
+    }
+    80% {
+      text-shadow: 1px 0 #cc2222, -1px 0 #550000;
+    }
+    100% {
+      text-shadow: -1px 0 #cc2222, 1px 0 #550000;
+    }
+  }
+</style>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+  import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAAIydzRApZ72ZN85KLkeqN5qyyWsC77gc",
+    authDomain: "mypublicchat-88597.firebaseapp.com",
+    databaseURL: "https://mypublicchat-88597-default-rtdb.firebaseio.com",
+    projectId: "mypublicchat-88597",
+    storageBucket: "mypublicchat-88597.firebasestorage.app",
+    messagingSenderId: "854663963649",
+    appId: "1:854663963649:web:bc34cbf09cac9da36acc00",
+    measurementId: "G-02RJJ5LCW7"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const messagesRef = ref(db, 'messages');
+
+  const chatCircle = document.querySelector('.chat-circle');
+  const profilesWrapper = document.getElementById('profilesWrapper');
+  const chatRoom = document.getElementById('chatRoom');
+  const goBackBtn = document.getElementById('goBackBtn');
+  const chatContent = document.getElementById('chatContent');
+  const messageInput = document.getElementById('messageInput');
+  const sendBtn = document.getElementById('sendBtn');
+
+  chatCircle.addEventListener('click', (e) => {
+    e.preventDefault();
+    profilesWrapper.style.visibility = 'hidden';
+    profilesWrapper.style.opacity = '0';
+    profilesWrapper.style.pointerEvents = 'none';
+    chatRoom.style.display = 'flex';
+  });
+
+  goBackBtn.addEventListener('click', () => {
+    chatRoom.style.display = 'none';
+    profilesWrapper.style.visibility = 'visible';
+    profilesWrapper.style.opacity = '1';
+    profilesWrapper.style.pointerEvents = 'auto';
+  });
+
+  function getOrCreateAnonNumber() {
+    let anonNumber = localStorage.getItem('anonNumber');
+    if (!anonNumber) {
+      const length = Math.floor(Math.random() * 4) + 1;
+      anonNumber = '';
+      for (let i = 0; i < length; i++) {
+        anonNumber += Math.floor(Math.random() * 10);
+      }
+      localStorage.setItem('anonNumber', anonNumber);
+    }
+    return anonNumber;
+  }
+
+  function sendMessage() {
+    const text = messageInput.value.trim();
+    if (!text) return;
+
+    let prefix = 'Anonymous';
+    let messageText = text;
+
+    if (text.startsWith("/owner ")) {
+      prefix = '[Owner] Neo';
+      messageText = text.replace("/owner ", "");
+    } else if (text.startsWith("/coowner ")) {
+      prefix = '[Co-Owner] Cipher';
+      messageText = text.replace("/coowner ", "");
+    } else {
+      const anonNumber = getOrCreateAnonNumber();
+      prefix = `Anonymous${anonNumber}`;
+    }
+
+    const fullMessage = {
+      user: prefix,
+      text: messageText,
+      timestamp: Date.now()
+    };
+
+    push(messagesRef, fullMessage)
+      .then(() => {
+        messageInput.value = '';
+        messageInput.focus();
+      })
+      .catch((err) => {
+        console.error("Fehler beim Senden:", err);
+      });
+  }
+
+  sendBtn.addEventListener('click', sendMessage);
+  messageInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  onChildAdded(messagesRef, (data) => {
+    const msg = data.val();
+    const msgDiv = document.createElement('div');
+    msgDiv.classList.add('chat-message', 'user');
+    msgDiv.innerHTML = `<strong>${msg.user}:</strong> ${msg.text}`;
+    chatContent.appendChild(msgDiv);
+    chatContent.scrollTop = chatContent.scrollHeight;
+  });
+
+</script>
+
 <div class="footer">
   I ♥ the Internet / Credits to STN
   <br>
@@ -746,7 +1133,7 @@
 </div>
 
 <audio id="bgMusic" loop>
-  <source src="https://files.catbox.moe/3w3gjy.mp3" type="audio/mpeg">
+  <source src="https://files.catbox.moe/v7dg9e.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
 
@@ -803,7 +1190,7 @@ function enterSite() {
     });
   }, 1000);
 
-  bgMusic.volume = 0.2;
+  bgMusic.volume = 0.07;
   bgMusic.play().catch(err => console.error("Audio playback failed:", err));
 }
 
